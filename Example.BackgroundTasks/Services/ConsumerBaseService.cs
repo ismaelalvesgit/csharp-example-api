@@ -10,12 +10,12 @@ namespace Example.BackgroundTasks.Services
         private readonly ConsumerConfig _consumerConfig;
         private readonly string _topic;
         private readonly string _groupId;
-        private IConsumer<Ignore, string> _consumer;
+        private IConsumer<Ignore, string>? _consumer;
         private readonly int _maxNumAttempts;
         private readonly bool _enableRetryOnFailure;
         private readonly int _retryIntervalInSec;
 
-        public ConsumerBaseService(string topic, string groupId, IConfiguration configuration, ILogger<ConsumerBaseService> logger)
+        protected ConsumerBaseService(string topic, string groupId, IConfiguration configuration, ILogger<ConsumerBaseService> logger)
         {
             _topic = topic;
             _groupId = groupId;
@@ -27,11 +27,11 @@ namespace Example.BackgroundTasks.Services
             {
                 BootstrapServers = configuration.GetValue<string>("Messaging:Kafka:Consumers:Servers"),
                 GroupId = groupId,
-                AutoOffsetReset = AutoOffsetReset.Earliest
+                AutoOffsetReset = AutoOffsetReset.Earliest,
             };
         }
 
-        public ConsumerBaseService(string topic, IConfiguration configuration, IHostEnvironment environment, ILogger<ConsumerBaseService> logger)
+        protected ConsumerBaseService(string topic, IConfiguration configuration, IHostEnvironment environment, ILogger<ConsumerBaseService> logger)
         {
             _topic = topic;
             _groupId = environment.ApplicationName;
@@ -103,7 +103,7 @@ namespace Example.BackgroundTasks.Services
                             if (!committed)
                             {
                                 Commit(message);
-                                // publicar a messagem deadleare queue
+                                // Publish in deadleare queue
                             }
                         }, stoppingToken);
                     }
@@ -122,7 +122,7 @@ namespace Example.BackgroundTasks.Services
 
         public virtual void Dispose()
         {
-            _consumer.Dispose();
+            _consumer?.Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -133,7 +133,7 @@ namespace Example.BackgroundTasks.Services
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            _consumer.Close();
+            _consumer?.Close();
             await Task.CompletedTask;
         }
 
@@ -141,7 +141,7 @@ namespace Example.BackgroundTasks.Services
         {
             try
             {
-                _consumer.Commit(message);
+                _consumer?.Commit(message);
                 return true;
             }
             catch (KafkaException ex)
