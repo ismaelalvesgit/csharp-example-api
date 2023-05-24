@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "service.fullname" . }}-background
+  labels: {{ include "service.labels.background" . | nindent 4 }}
+  {{- if or .Values.namespace .Release.Namespace  }}
+  namespace: {{ or .Values.namespace .Release.Namespace }}
+  {{- end}}
+  annotations:
+  {{ include "service.annotations.background" . | indent 3 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  minReadySeconds: 100
+  strategy:
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels: {{ include "service.labels.background" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{ include "service.labels.background" . | nindent 8 }}
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: {{ include "service.name" . }}-background
+        image: "{{ .Values.image.repository }}-background:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        volumeMounts:
+          - name: {{ template "service.name" . }}-config
+            mountPath: /app/appsettings.json
+            subPath: backgroundSettings.json
+        resources:
+          requests:
+            memory: "{{ .Values.resources.requests.memory }}"
+            cpu: {{ .Values.resources.requests.cpu }}
+          limits:
+            memory: "{{ .Values.resources.limits.memory }}"
+            cpu: {{ .Values.resources.limits.cpu }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: 
+            drop:
+              - NET_RAW
+          privileged: false
+          procMount: Default
+          runAsUser: 100
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+      volumes:
+        - name: {{ template "service.name" . }}-config
+          configMap:
+            name: {{ template "service.fullname" . }}-configmap
