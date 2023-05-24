@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Example.Application.Helpers;
+using System.Text;
 using System.Text.Json;
 
 namespace Example.API.Middlewares
@@ -8,11 +9,13 @@ namespace Example.API.Middlewares
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
         private readonly string?[] _omitRouters;
+        private readonly IHostEnvironment _environment;
 
-        public LoggingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, IConfiguration configuration)
+        public LoggingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, IConfiguration configuration, IHostEnvironment environment)
         {
             _next = next;
             _logger = loggerFactory.CreateLogger<LoggingMiddleware>();
+            _environment = environment;
             _omitRouters = configuration.GetSection("IgnoreHostLogging").GetChildren().Select(x => x.Value).ToArray();
         }
 
@@ -26,13 +29,11 @@ namespace Example.API.Middlewares
 
                 var originalResponseBody = context.Response.Body;
 
-                using (var responseBody = new MemoryStream())
-                {
-                    context.Response.Body = responseBody;
-                    await _next.Invoke(context);
+                using var responseBody = new MemoryStream();
+                context.Response.Body = responseBody;
+                await _next.Invoke(context);
 
-                    await LogResponse(context, requestId, responseBody, originalResponseBody);
-                }
+                await LogResponse(context, requestId, responseBody, originalResponseBody);
             }
             else
             {
@@ -45,6 +46,7 @@ namespace Example.API.Middlewares
             var utcData = DateTime.UtcNow;
             var responseContent = new StringBuilder();
             responseContent.Append("Type: Respose ");
+            responseContent.Append($"ApplicationName: {_environment.ApplicationName} ");
             responseContent.Append($"RequestId: {requestId} ");
             responseContent.Append($"Time: {utcData.ToString()} ");
             responseContent.Append($"StatusCode: {context.Response.StatusCode} ");
@@ -69,6 +71,7 @@ namespace Example.API.Middlewares
             var requestContent = new StringBuilder();
             var utcData = DateTime.UtcNow;
             requestContent.Append("Type: Request ");
+            requestContent.Append($"ApplicationName: {_environment.ApplicationName} ");
             requestContent.Append($"RequestId: {requestId} ");
             requestContent.Append($"Time: {utcData.ToString()} ");
             requestContent.Append($"Method: {context.Request.Method.ToUpper()} ");
@@ -78,7 +81,7 @@ namespace Example.API.Middlewares
             {
                headers.Add(headerKey, headerValue.ToString());
             }
-            requestContent.Append($"Headers: {JsonSerializer.Serialize(headers)} ");
+            requestContent.Append($"Headers: {UtilHelper.Serialize(headers)} ");
             context.Request.EnableBuffering();
             var requestReader = new StreamReader(context.Request.Body);
             var content = await requestReader.ReadToEndAsync();
