@@ -1,0 +1,48 @@
+replicaCount: 1
+
+image:
+  repository: ismaelalvesdoc/csharp-example-api
+  tag: latest
+  pullPolicy: Always
+  livenessPath: /api/v1/healthcheck
+
+service:
+  enabled: true
+  type: NodePort
+
+ingress:
+  enabled: false
+  host: ingress.local
+  rewrite: /
+  sslRedirect: false
+  sslPassthrough: false
+  forceSslRedirect: false
+  proxySendTimeout: 3600
+  proxyRendTimeout: 3600
+
+resources:
+  requests:
+    memory: "700Mi"
+    cpu: 400m
+  limits:
+    memory: "1Gi"
+    cpu: 800m
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 70
+        
