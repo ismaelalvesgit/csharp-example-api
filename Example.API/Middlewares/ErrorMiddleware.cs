@@ -1,7 +1,7 @@
 ﻿using Example.Application.Dto;
+using Example.Application.Helpers;
 using Example.Domain.Exceptions;
 using System.Net;
-using System.Text.Json;
 
 namespace Example.API.Middlewares
 {
@@ -67,15 +67,10 @@ namespace Example.API.Middlewares
             var requestId = context.Request.Headers["RequestId"].ToString();
             _logger.LogError($"RequestId: {requestId} Error: {exception}");
             var response = GetResponseData(requestId, exception);
-            var jsonOptions = new JsonSerializerOptions()
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true
-            };
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = response.Status;
-            return context.Response.WriteAsync(JsonSerializer.Serialize(response, jsonOptions));
+            return context.Response.WriteAsync(UtilHelper.Serialize(response));
         }
     }
 }

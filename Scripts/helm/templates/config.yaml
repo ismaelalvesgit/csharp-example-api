@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "service.fullname" . }}-configmap
+  {{- if or .Values.namespace .Release.Namespace }}
+  namespace: {{ or .Values.namespace .Release.Namespace }}
+  {{- end}}
+data:
+  apiSettings.json: |
+{{ .Files.Get "config/apiSettings.json" | indent 4 }} 
+  backgroundSettings.json: |
+{{ .Files.Get "config/backgroundSettings.json" | indent 4 }}   

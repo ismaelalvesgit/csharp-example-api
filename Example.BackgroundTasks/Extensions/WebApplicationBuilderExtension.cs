@@ -57,6 +57,7 @@ public static class WebApplicationBuilderExtension
     {
         builder.Services.AddAutoMapper(Assembly.Load("Example.Application"));
         builder.Services.AddValidatorsFromAssembly(Assembly.Load("Example.Application"));
+
         return builder;
-    }
+    }   
 }

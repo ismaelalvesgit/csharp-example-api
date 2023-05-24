@@ -18,7 +18,9 @@ namespace Example.Application.Services
             _logger = logger;
             _producerConfig = new ProducerConfig()
             {
-                BootstrapServers = configuration.GetValue<string>("Messaging:Kafka:Producers:Servers"),    
+                BootstrapServers = configuration.GetValue<string>("Messaging:Kafka:Producers:Servers"),
+                AllowAutoCreateTopics = true,
+                MessageTimeoutMs = configuration.GetValue<int>("Messaging:Kafka:Producers:Timeout")
             };
         }
 
