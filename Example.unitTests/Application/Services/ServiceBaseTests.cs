@@ -10,14 +10,15 @@ namespace Example.unitTests.Application.Services
     public class ServiceBaseTests : IClassFixture<WebInfrastructureFixture>
     {
         private readonly IServiceBase<Category> _serviceBase;
-        public ServiceBaseTests(WebInfrastructureFixture infrastructureFixture) {
+        public ServiceBaseTests(WebInfrastructureFixture infrastructureFixture)
+        {
             var scope = infrastructureFixture.Services.CreateScope();
 
             _serviceBase = scope.ServiceProvider.GetRequiredService<IServiceBase<Category>>();
         }
 
         [Fact]
-        public async Task Remove_ShoudSucess() 
+        public async Task Remove_ShoudSucess()
         {
             var category = CategoryGenerator.GenerateValidCategorys(1).First();
             await _serviceBase.InsertAsync(category);

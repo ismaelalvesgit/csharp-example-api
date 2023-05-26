@@ -1,5 +1,5 @@
-﻿using Example.Domain.Models;
-using Example.Domain.Enums;
+﻿using Example.Domain.Enums;
+using Example.Domain.Models;
 using Xunit;
 
 namespace Example.unitTests.Domain.Model

@@ -1,9 +1,7 @@
 ﻿using Example.Domain.Entitys;
 using Example.Domain.Exceptions;
 using Example.Domain.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Example.unitTests.Domain.Model
 {
@@ -41,4 +39,3 @@ namespace Example.unitTests.Domain.Model
         }
     }
 }
- 

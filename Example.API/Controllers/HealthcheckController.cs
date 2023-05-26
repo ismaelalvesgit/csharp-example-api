@@ -13,7 +13,7 @@ public class HealthcheckController : Controller
 {
     private readonly AppDbContext _context;
 
-    public HealthcheckController(AppDbContext context) 
+    public HealthcheckController(AppDbContext context)
     {
         _context = context;
     }

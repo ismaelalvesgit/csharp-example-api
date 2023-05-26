@@ -23,7 +23,7 @@ namespace Example.API.Middlewares
         {
             var requestId = SetRequestId(context);
 
-            if(!IsOmit(context))
+            if (!IsOmit(context))
             {
                 await LogRequest(context, requestId);
 
@@ -45,7 +45,7 @@ namespace Example.API.Middlewares
         {
             var utcData = DateTime.UtcNow;
             var responseContent = new StringBuilder();
-            responseContent.Append("Type: Respose ");
+            responseContent.Append("Type: Response ");
             responseContent.Append($"ApplicationName: {_environment.ApplicationName} ");
             responseContent.Append($"RequestId: {requestId} ");
             responseContent.Append($"Time: {utcData.ToString()} ");
@@ -55,7 +55,7 @@ namespace Example.API.Middlewares
             {
                 headers.Add(headerKey, headerValue.ToString());
             }
-            responseContent.Append($"Headers: {JsonSerializer.Serialize(headers)} ");
+            responseContent.Append($"Headers: {UtilHelper.Serialize(headers)} ");
             responseBody.Position = 0;
             var content = await new StreamReader(responseBody).ReadToEndAsync();
             responseContent.Append($"Body: {content}");
@@ -79,7 +79,7 @@ namespace Example.API.Middlewares
             Dictionary<string, string> headers = new();
             foreach (var (headerKey, headerValue) in context.Request.Headers)
             {
-               headers.Add(headerKey, headerValue.ToString());
+                headers.Add(headerKey, headerValue.ToString());
             }
             requestContent.Append($"Headers: {UtilHelper.Serialize(headers)} ");
             context.Request.EnableBuffering();
@@ -91,22 +91,22 @@ namespace Example.API.Middlewares
             context.Request.Body.Position = 0;
         }
 
-        private static string SetRequestId(HttpContext context) 
+        private static string SetRequestId(HttpContext context)
         {
             var requestId = context.Request.Headers["RequestId"].ToString();
-            
-            if (string.IsNullOrEmpty(requestId)) 
+
+            if (string.IsNullOrEmpty(requestId))
             {
                 requestId = Guid.NewGuid().ToString();
                 context.Request.Headers.Add("RequestId", requestId);
-            }       
-            
+            }
+
             context.Response.Headers.Add("RequestId", requestId);
 
             return requestId;
         }
 
-        private bool IsOmit(HttpContext context) 
+        private bool IsOmit(HttpContext context)
         {
             return _omitRouters.Any(x => x == context.Request.Path);
         }

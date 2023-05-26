@@ -33,7 +33,7 @@ public static class WebApplicationBuilderExtension
     public static WebApplicationBuilder AddCronJobs(this WebApplicationBuilder builder)
     {
         var jobs = builder.Configuration.GetSection("Jobs").Get<Dictionary<string, string>>();
-        
+
         builder.Services.AddCronJob<CategoryJob>(c =>
         {
             c.TimeZoneInfo = TimeZoneInfo.Local;
@@ -59,5 +59,5 @@ public static class WebApplicationBuilderExtension
         builder.Services.AddValidatorsFromAssembly(Assembly.Load("Example.Application"));
 
         return builder;
-    }   
+    }
 }

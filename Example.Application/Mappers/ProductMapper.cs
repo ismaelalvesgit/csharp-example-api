@@ -6,7 +6,8 @@ namespace Example.Application.Mappers
 {
     public class ProductMapper : Profile
     {
-        public ProductMapper() {
+        public ProductMapper()
+        {
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDto, Product>();
         }

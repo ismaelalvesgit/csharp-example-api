@@ -9,14 +9,14 @@ namespace Example.integrationTests.Helpers
         public static IEnumerable<Category> GenerateValidCategorys(int quantity)
         {
             var categorys = new List<Category>();
-            
+
             for (int i = 0; i < quantity; i++)
             {
                 var fake = new Faker();
                 var category = new Category()
-                { 
-                    Name = fake.Name.FullName(), 
-                    ImageUrl = fake.Internet.Url() 
+                {
+                    Name = fake.Name.FullName(),
+                    ImageUrl = fake.Internet.Url()
                 };
 
                 categorys.Add(category);

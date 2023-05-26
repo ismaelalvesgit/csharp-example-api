@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using Example.Application.Dto;
 using Example.Domain.Entitys;
 
 namespace Example.unitTests.Helpers
@@ -9,7 +8,7 @@ namespace Example.unitTests.Helpers
         public static IEnumerable<Category> GenerateValidCategorys(int quantity)
         {
             var categorys = new List<Category>();
-            
+
             for (int i = 0; i < quantity; i++)
             {
                 var fake = new Faker();

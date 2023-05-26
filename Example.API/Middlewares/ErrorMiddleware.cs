@@ -32,25 +32,26 @@ namespace Example.API.Middlewares
         {
             var code = HttpStatusCode.InternalServerError;
             var title = "Internal Server Error sorry 🤭";
-            dynamic erros =  new {
+            dynamic erros = new
+            {
                 Error = new string[] { exception.Message },
             };
 
             switch (exception)
             {
                 case NotFoundException:
-                {
-                    code = HttpStatusCode.NotFound;
-                    title = "NotFound resource 👀";
-                    break;
-                }
+                    {
+                        code = HttpStatusCode.NotFound;
+                        title = "NotFound resource 👀";
+                        break;
+                    }
 
                 case BadRequestException:
-                {
-                    code = HttpStatusCode.BadRequest;
-                    title = "oops !!! something is wrong check there  😩";
-                    break;
-                }
+                    {
+                        code = HttpStatusCode.BadRequest;
+                        title = "oops !!! something is wrong check there  😩";
+                        break;
+                    }
             }
 
             return new ExceptionDto()

@@ -35,7 +35,7 @@ public static class ApplicationModule
                     services.AddSingleton(serviceType, implementationType); break;
                 case ServiceLifetime.Transient:
                     services.AddTransient(serviceType, implementationType); break;
-            } 
+            }
         }
     }
 }

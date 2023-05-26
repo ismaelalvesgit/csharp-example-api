@@ -52,7 +52,7 @@ namespace Example.BackgroundTasks.Services
             await Task.CompletedTask;  // do the work
         }
 
-        protected async Task ProcessQueue(CancellationToken stoppingToken) 
+        protected async Task ProcessQueue(CancellationToken stoppingToken)
         {
             _logger.LogInformation($"Start consumer topic: {_topic} groupId: {_groupId}");
             _consumer = new ConsumerBuilder<Ignore, string>(_consumerConfig).Build();
@@ -89,7 +89,7 @@ namespace Example.BackgroundTasks.Services
 
                                 if (currentNumAttempts < _maxNumAttempts)
                                 {
-                                    if (!_enableRetryOnFailure) 
+                                    if (!_enableRetryOnFailure)
                                     {
                                         committed = Commit(message);
                                         break;
@@ -128,7 +128,7 @@ namespace Example.BackgroundTasks.Services
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-           await ProcessQueue(cancellationToken);
+            await ProcessQueue(cancellationToken);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
@@ -151,12 +151,12 @@ namespace Example.BackgroundTasks.Services
             }
         }
 
-        private void LoggerError(Exception ex) 
+        private void LoggerError(Exception ex)
         {
             _logger.LogError($@"Failed consumer topic: {_topic} {ex.Message}");
-        } 
-        
-        private void LoggerError(string ex) 
+        }
+
+        private void LoggerError(string ex)
         {
             _logger.LogError($@"Failed consumer topic: {_topic} {ex}");
         }
@@ -164,9 +164,8 @@ namespace Example.BackgroundTasks.Services
         public T? Deserialize<T, Y>(string data)
         {
             var deserialzer = JsonConvert.DeserializeObject<T>(data);
-            IValidator<T>? validation = Activator.CreateInstance(typeof(Y)) as IValidator<T>;
 
-            if (validation != null && deserialzer != null)
+            if (Activator.CreateInstance(typeof(Y)) is IValidator<T> validation && deserialzer != null)
             {
                 validation.ValidateAndThrow(deserialzer);
             }

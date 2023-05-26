@@ -32,7 +32,7 @@ public class ServiceBase<TEntity> : IServiceBase<TEntity> where TEntity : Entity
 
     public virtual Task DeleteAsync(int id)
     {
-       return _repository.DeleteAsync(id);
+        return _repository.DeleteAsync(id);
     }
 
     public virtual Task DeleteAsync(TEntity model)
@@ -44,7 +44,7 @@ public class ServiceBase<TEntity> : IServiceBase<TEntity> where TEntity : Entity
     {
         var options = GetQueryOptions(query);
         return _repository.FindAllAsync(query.Page, query.PageSize, options);
-    }  
+    }
 
     public virtual Task<TEntity?> FindByIdAsync(int id)
     {

@@ -7,7 +7,8 @@ namespace Example.Application.Mappers
 {
     public class PaginationCategoryMapper : Profile
     {
-        public PaginationCategoryMapper() {
+        public PaginationCategoryMapper()
+        {
             CreateMap<Pagination<Category>, Pagination<FindCategoryDto>>();
             CreateMap<Pagination<FindCategoryDto>, Pagination<Category>>();
         }

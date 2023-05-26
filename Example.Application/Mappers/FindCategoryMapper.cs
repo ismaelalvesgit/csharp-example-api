@@ -6,7 +6,8 @@ namespace Example.Application.Mappers
 {
     public class FindCategoryMapper : Profile
     {
-        public FindCategoryMapper() {
+        public FindCategoryMapper()
+        {
             CreateMap<Category, FindCategoryDto>();
             CreateMap<FindCategoryDto, Category>();
         }

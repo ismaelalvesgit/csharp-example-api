@@ -7,7 +7,8 @@ namespace Example.API.Extensions;
 [ExcludeFromCodeCoverage]
 public static class ApplicationBuilderExtension
 {
-    public static IApplicationBuilder UseContextMigrations(this IApplicationBuilder app) {
+    public static IApplicationBuilder UseContextMigrations(this IApplicationBuilder app)
+    {
         var context = app.ApplicationServices.CreateScope().ServiceProvider.GetService<AppDbContext>();
 
         if (context != null && context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory" && context.Database.GetPendingMigrations().Any())
@@ -21,7 +22,8 @@ public static class ApplicationBuilderExtension
     public static IApplicationBuilder UseSwaggerSetup(this IApplicationBuilder app)
     {
         app.UseSwagger();
-        app.UseSwaggerUI(c => {
+        app.UseSwaggerUI(c =>
+        {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "Example.Services.Api v1");
         });
 

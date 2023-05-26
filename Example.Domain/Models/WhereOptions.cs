@@ -23,7 +23,7 @@ namespace Example.Domain.Models
             ToObject(condition);
         }
 
-        private void ToObject(string condition) 
+        private void ToObject(string condition)
         {
             // Name eq Raquel
             var split = condition.Split(' ');
@@ -38,7 +38,8 @@ namespace Example.Domain.Models
             this.Value = condition.Split($"{split[0]} {split[1]} ")[1];
         }
 
-        private static WhereOperator GetOperator(string condition) {
+        private static WhereOperator GetOperator(string condition)
+        {
             return condition switch
             {
                 "eq" or "Eq" or "EQ" => WhereOperator.Equal,

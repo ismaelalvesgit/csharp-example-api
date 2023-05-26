@@ -20,7 +20,7 @@ namespace Example.BackgroundTasks.HostedServices
             IConfiguration configuration,
             ILogger<CategoryConsumer> logger,
             IHostEnvironment environment
-            ) : base(config.topic, configuration, environment,logger)
+            ) : base(config.topic, configuration, environment, logger)
         {
             _categoryService = categoryService;
             _mapper = mapper;

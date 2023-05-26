@@ -17,8 +17,8 @@ public abstract class BaseEntityTypeConfiguration<TModel> : IEntityTypeConfigura
          .ValueGeneratedOnAdd();
 
         builder.Property(x => x.CreatedAt)
-               .HasColumnType("datetime(6)");     
-        
+               .HasColumnType("datetime(6)");
+
         builder.Property(x => x.UpdatedAt)
                .HasColumnType("datetime(6)");
     }

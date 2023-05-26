@@ -32,7 +32,7 @@ public class ProductController : Controller
     public async Task<ActionResult<Pagination<FindProductDto>>> FindAllAsync([FromQuery] QueryData query)
     {
         var result = await _productService.FindAllAsync(query);
-        var map = _mapper.Map<Pagination<FindProductDto>> (result);
+        var map = _mapper.Map<Pagination<FindProductDto>>(result);
         return Ok(map);
     }
 
@@ -114,7 +114,7 @@ public class ProductController : Controller
         await _productService.UpdateAsync(product);
         return StatusCode(StatusCodes.Status200OK);
     }
-    
+
     /// <summary>
     /// Delete an product.
     /// </summary>
@@ -126,7 +126,7 @@ public class ProductController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeleteAsync(int id)
-    {   
+    {
         await _productService.DeleteAsync(id);
         return StatusCode(StatusCodes.Status202Accepted);
     }

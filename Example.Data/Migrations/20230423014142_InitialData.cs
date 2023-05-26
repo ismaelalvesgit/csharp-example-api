@@ -8,16 +8,16 @@ namespace Example.Data.Migrations
     public partial class InitialData : Migration
     {
         /// <inheritdoc />
-        protected override void Up(MigrationBuilder mb)
+        protected override void Up(MigrationBuilder migrationBuilder)
         {
             var utcNow = DateTime.UtcNow;
-            mb.InsertData(
+            migrationBuilder.InsertData(
                 table: "Category",
                 columns: new[] { "Name", "ImageUrl", "CreatedAt", "UpdatedAt" },
                 values: new object[] { "Pessoa", "https://avatars.githubusercontent.com/u/28938084?v=4", utcNow, utcNow }
             );
-            
-            mb.InsertData(
+
+            migrationBuilder.InsertData(
                 table: "Product",
                 columns: new[] { "Name", "Quantity", "Price", "CategoryId", "CreatedAt", "UpdatedAt" },
                 values: new object[] { "Ismael", 10F, 10m, "1", utcNow, utcNow }
@@ -25,15 +25,15 @@ namespace Example.Data.Migrations
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder mb)
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
-            mb.DeleteData(
+            migrationBuilder.DeleteData(
                 table: "Category",
                 keyColumn: "Name",
                 keyValue: "Pessoa"
             );
 
-            mb.DeleteData(
+            migrationBuilder.DeleteData(
                 table: "Product",
                 keyColumn: "Name",
                 keyValue: "Ismael"

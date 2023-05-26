@@ -16,7 +16,7 @@ public class CategoryMap : BaseEntityTypeConfiguration<Category>
         builder.Property(x => x.ImageUrl)
                .IsRequired()
                .HasMaxLength(300);
-        
+
         builder.Navigation("Products");
         builder.ToTable("Category");
 

@@ -17,7 +17,7 @@ public class ProductMap : BaseEntityTypeConfiguration<Product>
                 .HasMaxLength(80);
 
         builder.Property(x => x.Description)
-                .HasColumnType("longtext");   
+                .HasColumnType("longtext");
 
         builder.Property(x => x.ImageUrl)
                 .HasColumnType("longtext");

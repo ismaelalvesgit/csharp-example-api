@@ -20,27 +20,27 @@ namespace Example.Data.Helpers
                 BindingFlags.Public | BindingFlags.Instance) != null;
         }
 
-        public static IQueryable<T> OrderByProperty<T>(this IQueryable<T> source, string propertyName)
-        {         
+        public static IQueryable<T>? OrderByProperty<T>(this IQueryable<T> source, string propertyName)
+        {
             ParameterExpression paramterExpression = Expression.Parameter(typeof(T));
             Expression orderByProperty = Expression.Property(paramterExpression, propertyName);
             LambdaExpression lambda = Expression.Lambda(orderByProperty, paramterExpression);
             MethodInfo genericMethod = OrderByMethod.MakeGenericMethod(typeof(T), orderByProperty.Type);
-            object ret = genericMethod.Invoke(null, new object[] { source, lambda });
-            return (IQueryable<T>)ret;
+            object? ret = genericMethod.Invoke(null, new object[] { source, lambda });
+            return ret as IQueryable<T>;
         }
 
-        public static IQueryable<T> OrderByPropertyDescending<T>(this IQueryable<T> source, string propertyName)
+        public static IQueryable<T>? OrderByPropertyDescending<T>(this IQueryable<T> source, string propertyName)
         {
             ParameterExpression paramterExpression = Expression.Parameter(typeof(T));
             Expression orderByProperty = Expression.Property(paramterExpression, propertyName);
             LambdaExpression lambda = Expression.Lambda(orderByProperty, paramterExpression);
             MethodInfo genericMethod = OrderByDescendingMethod.MakeGenericMethod(typeof(T), orderByProperty.Type);
-            object ret = genericMethod.Invoke(null, new object[] { source, lambda });
-            return (IQueryable<T>)ret;
+            object? ret = genericMethod.Invoke(null, new object[] { source, lambda });
+            return ret as IQueryable<T>;
         }
 
-        public static IQueryable<T> WhereByOperation<T>(this IQueryable<T> source, string member, object value, WhereOperator? @operator)
+        public static IQueryable<T>? WhereByOperation<T>(this IQueryable<T> source, string member, object value, WhereOperator? @operator)
         {
             var item = Expression.Parameter(typeof(T), "item");
             var memberValue = member.Split('.').Aggregate((Expression)item, Expression.PropertyOrField);
@@ -49,21 +49,21 @@ namespace Example.Data.Helpers
                 value = Convert.ChangeType(value, memberType);
 
             var condition = Expression.Equal(memberValue, Expression.Constant(value, memberType));
-
+   
             switch (@operator)
             {
                 case WhereOperator.NotEqual:
-                    condition = Expression.NotEqual(memberValue, Expression.Constant(value, memberType)); break;                
+                    condition = Expression.NotEqual(memberValue, Expression.Constant(value, memberType)); break;
                 case WhereOperator.GreaterThan:
-                    condition = Expression.GreaterThan(memberValue, Expression.Constant(value, memberType)); break;   
+                    condition = Expression.GreaterThan(memberValue, Expression.Constant(value, memberType)); break;
                 case WhereOperator.GreaterThanOrEqual:
-                    condition = Expression.GreaterThanOrEqual(memberValue, Expression.Constant(value, memberType)); break; 
+                    condition = Expression.GreaterThanOrEqual(memberValue, Expression.Constant(value, memberType)); break;
                 case WhereOperator.LessThan:
                     condition = Expression.LessThan(memberValue, Expression.Constant(value, memberType)); break;
                 case WhereOperator.LessThanOrEqual:
                     condition = Expression.LessThanOrEqual(memberValue, Expression.Constant(value, memberType)); break;
             }
-           
+
             var predicate = Expression.Lambda<Func<T, bool>>(condition, item);
             return source.Where(predicate);
         }

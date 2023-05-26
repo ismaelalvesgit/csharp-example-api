@@ -7,7 +7,8 @@ namespace Example.Application.Mappers
 {
     public class PaginationProductMapper : Profile
     {
-        public PaginationProductMapper() {
+        public PaginationProductMapper()
+        {
             CreateMap<Pagination<Product>, Pagination<FindProductDto>>();
             CreateMap<Pagination<FindProductDto>, Pagination<Product>>();
         }

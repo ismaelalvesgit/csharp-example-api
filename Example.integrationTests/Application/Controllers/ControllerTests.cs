@@ -15,17 +15,17 @@ namespace Example.integrationTest.Application.Controllers
         }
 
         [Fact]
-        public async Task Healthcheck_ShouldSuccess() 
+        public async Task Healthcheck_ShouldSuccess()
         {
             // Act
             var response = await _client.GetAsync($"{_pathHealthcheck}");
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }  
-        
+        }
+
         [Fact]
-        public async Task Document_ShouldSuccess() 
+        public async Task Document_ShouldSuccess()
         {
             // Act
             var response = await _client.GetAsync($"/swagger/index.html");

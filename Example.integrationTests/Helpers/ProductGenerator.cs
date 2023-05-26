@@ -9,7 +9,7 @@ namespace Example.integrationTests.Helpers
         public static IEnumerable<Product> GenerateValidProducts(int quantity, int categoryId)
         {
             var products = new List<Product>();
-            
+
             for (int i = 0; i < quantity; i++)
             {
                 var fake = new Faker();
@@ -21,7 +21,7 @@ namespace Example.integrationTests.Helpers
                     description: fake.Commerce.Locale,
                     imageUrl: fake.Internet.Url()
                  );
-                
+
                 product.UpdateAmount(fake.Random.Number(1, 10));
 
                 products.Add(product);

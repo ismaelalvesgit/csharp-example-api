@@ -5,7 +5,8 @@ namespace Example.Application.Validations
 {
     public class ProductValidation : AbstractValidator<ProductDto>
     {
-        public ProductValidation() { 
+        public ProductValidation()
+        {
             RuleFor(x => x.CategoryId).NotNull().WithMessage("CategoryId is required");
             RuleFor(x => x.CategoryId).NotEmpty().WithMessage("CategoryId is not empty");
             RuleFor(x => x.CategoryId).GreaterThanOrEqualTo(0).WithMessage("CategoryId GreaterThanOrEqualTo 0");

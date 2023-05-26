@@ -134,7 +134,7 @@ public class CategoryController : Controller
         await _categoryService.UpdateAsync(category);
         return StatusCode(StatusCodes.Status200OK);
     }
-    
+
     /// <summary>
     /// Delete an Category.
     /// </summary>
@@ -146,7 +146,7 @@ public class CategoryController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeleteAsync(int id)
-    {   
+    {
         await _categoryService.DeleteAsync(id);
         return StatusCode(StatusCodes.Status202Accepted);
     }

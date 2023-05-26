@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Example.Domain.Entitys;
 using Microsoft.EntityFrameworkCore;
-using Example.Domain.Entitys;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Example.Data;
 

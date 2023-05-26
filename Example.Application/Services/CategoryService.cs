@@ -6,6 +6,6 @@ namespace Example.Application.Services;
 
 public class CategoryService : ServiceBase<Category>, ICategoryService
 {
-    public CategoryService( ICategoryRepository repository ) : base( repository )
+    public CategoryService(ICategoryRepository repository) : base(repository)
     { }
 }

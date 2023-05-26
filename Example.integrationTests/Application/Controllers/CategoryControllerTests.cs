@@ -24,7 +24,7 @@ namespace Example.integrationTest.Application.Controllers
         }
 
         [Fact]
-        public async Task FindById_ShouldThrowNotFoundException() 
+        public async Task FindById_ShouldThrowNotFoundException()
         {
             // Act
             var response = await _client.GetAsync($"{_path}/123");
@@ -33,10 +33,10 @@ namespace Example.integrationTest.Application.Controllers
             // Assert
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             Assert.Contains("Category not found", responseString);
-        }  
-        
+        }
+
         [Fact]
-        public async Task FindById_ShouldSuccess() 
+        public async Task FindById_ShouldSuccess()
         {
             // Arrange
             var category = CategoryGenerator.GenerateValidCategorys(1).First();
@@ -73,8 +73,8 @@ namespace Example.integrationTest.Application.Controllers
             Assert.NotNull(response);
             Assert.NotNull(categoryName);
             Assert.Contains(categoryName, responseString);
-        } 
-        
+        }
+
         [Fact]
         public async Task FindAll_ShouldThrowBadRequestException()
         {
@@ -102,13 +102,13 @@ namespace Example.integrationTest.Application.Controllers
 
             // Act
             var response = await _client.PostAsJsonAsync($"{_path}", category);
-     
+
             // Assert
             response.EnsureSuccessStatusCode();
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             Assert.NotNull(response);
         }
-        
+
         [Fact]
         public async Task Create_ShouldThrowBadRequestException()
         {
@@ -123,7 +123,7 @@ namespace Example.integrationTest.Application.Controllers
             Assert.Contains("Name is not empty", responseString);
             Assert.Contains("ImageUrl is not empty", responseString);
         }
-        
+
         [Fact]
         public async Task Put_ShouldThrowBadRequestException()
         {
@@ -143,7 +143,7 @@ namespace Example.integrationTest.Application.Controllers
             Assert.Contains("Name is not empty", responseString);
             Assert.Contains("ImageUrl is not empty", responseString);
         }
-        
+
         [Fact]
         public async Task Put_ShouldThrowNotFoundException()
         {

@@ -10,7 +10,7 @@ public class ProductService : ServiceBase<Product>, IProductService
 {
     readonly protected ICategoryRepository _categoryRepository;
 
-    public ProductService( IProductRepository repository, ICategoryRepository categoryRepository) : base( repository )
+    public ProductService(IProductRepository repository, ICategoryRepository categoryRepository) : base(repository)
     {
         _categoryRepository = categoryRepository;
     }
@@ -28,7 +28,7 @@ public class ProductService : ServiceBase<Product>, IProductService
 
     public override Task<Pagination<Product>> FindAllAsync(QueryData query)
     {
-        var options =  GetQueryOptions(query);
+        var options = GetQueryOptions(query);
         options.Includes = new string[] { "Category" };
         return base._repository.FindAllAsync(query.Page, query.PageSize, options);
     }

@@ -10,7 +10,7 @@ namespace Example.BackgroundTasks.Services
         private readonly TimeZoneInfo _timeZoneInfo;
         private readonly ILogger<CronJobServiceBase> _logger;
 
-        protected CronJobServiceBase(string cronExpression, TimeZoneInfo timeZoneInfo, ILogger<CronJobServiceBase> logger) 
+        protected CronJobServiceBase(string cronExpression, TimeZoneInfo timeZoneInfo, ILogger<CronJobServiceBase> logger)
         {
             _timer = null;
             _expression = CronExpression.Parse(cronExpression);
@@ -40,7 +40,9 @@ namespace Example.BackgroundTasks.Services
                     _timer = null;
                     if (!cancellationToken.IsCancellationRequested)
                     {
-                        try { await ExecuteAsync(cancellationToken); } catch(Exception ex) {
+                        try { await ExecuteAsync(cancellationToken); }
+                        catch (Exception ex)
+                        {
                             _logger.LogError($"Falied execute job Error {ex}");
                         }
                     }
