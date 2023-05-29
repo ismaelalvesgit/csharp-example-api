@@ -20,6 +20,18 @@ ingress:
   proxySendTimeout: 3600
   proxyRendTimeout: 3600
 
+env: 
+  - name: "ElasticApm__ServerUrl"
+    value: "http://server=kubernetes.docker.internal:8200"
+  - name: "Messaging_Kafka_Producers_Servers"
+    value: "http://kubernetes.docker.internal:9093"
+  - name: "Messaging_Kafka_Consumers_Servers"
+    value: "http://kubernetes.docker.internal:9093"
+
+secret:
+  - name: "ConnectionStrings__Default"
+    value: "server=kubernetes.docker.internal;userid=root;password=admin;database=exampleAPI"
+
 resources:
   requests:
     memory: "700Mi"

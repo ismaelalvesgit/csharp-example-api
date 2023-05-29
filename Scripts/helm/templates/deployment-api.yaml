@@ -28,10 +28,22 @@ spec:
       - name: {{ include "service.name" . }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        volumeMounts:
-          - name: {{ template "service.name" . }}-config
-            mountPath: /app/appsettings.json
-            subPath: apiSettings.json
+        env:
+          {{- range $key, $value := .Values.env }}
+          {{- if $value }}
+          - name: {{ $value.name }}
+            value: {{ $value.value | quote }}
+          {{- end }}
+          {{- end }}
+          {{- range $key, $value := .Values.secret }}
+          {{- if $value }}
+          - name: {{ $value.name }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "service.fullname" $ }}
+                key: {{ $value.name }}
+          {{- end }}
+          {{- end }}
         ports:
           - name: http
             containerPort: 80
@@ -61,8 +73,4 @@ spec:
           runAsUser: 100
           readOnlyRootFilesystem: false
           runAsNonRoot: false
-      volumes:
-        - name: {{ template "service.name" . }}-config
-          configMap:
-            name: {{ template "service.fullname" . }}-configmap
     
