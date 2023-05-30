@@ -19,7 +19,7 @@ namespace Example.Data.Migrations
                 .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Example.Domain.Models.Category", b =>
+            modelBuilder.Entity("Example.Domain.Entitys.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,10 +43,13 @@ namespace Example.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Category", (string)null);
                 });
 
-            modelBuilder.Entity("Example.Domain.Models.Product", b =>
+            modelBuilder.Entity("Example.Domain.Entitys.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,9 +92,9 @@ namespace Example.Data.Migrations
                     b.ToTable("Product", (string)null);
                 });
 
-            modelBuilder.Entity("Example.Domain.Models.Product", b =>
+            modelBuilder.Entity("Example.Domain.Entitys.Product", b =>
                 {
-                    b.HasOne("Example.Domain.Models.Category", "Category")
+                    b.HasOne("Example.Domain.Entitys.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -100,7 +103,7 @@ namespace Example.Data.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Example.Domain.Models.Category", b =>
+            modelBuilder.Entity("Example.Domain.Entitys.Category", b =>
                 {
                     b.Navigation("Products");
                 });
