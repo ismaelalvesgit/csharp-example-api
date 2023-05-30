@@ -20,6 +20,8 @@ public class CategoryMap : BaseEntityTypeConfiguration<Category>
         builder.Navigation("Products");
         builder.ToTable("Category");
 
+        builder.HasIndex(x => x.Name).IsUnique();
+
         base.Configure(builder);
     }
 }
