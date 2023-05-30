@@ -45,6 +45,7 @@ GreaterThan        | "gt" or "Gt" or "GT" | Price gt 10
 GreaterThanOrEqual | "ge" or "Ge" or "GE" | Price ge 10
 LessThan           | "lt" or "Lt" or "LT" | Price lt 10
 LessThanOrEqual    | "le" or "Le" or "LE" | Price le 10
+Like               | "lk" or "Lk" or "LK" | Name lk ismael (only string columns)
 
 #### 2) Helm
 Deixei configurado o [helm](https://helm.sh/) para que sejá possivel trabalhar com [kubernetes](https://kubernetes.io/pt-br/).
