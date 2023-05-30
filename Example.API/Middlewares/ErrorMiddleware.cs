@@ -1,6 +1,8 @@
 ﻿using Example.Application.Dto;
 using Example.Application.Helpers;
 using Example.Domain.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using System.Dynamic;
 using System.Net;
 
 namespace Example.API.Middlewares
@@ -32,26 +34,35 @@ namespace Example.API.Middlewares
         {
             var code = HttpStatusCode.InternalServerError;
             var title = "Internal Server Error sorry 🤭";
-            dynamic erros = new
-            {
-                Error = new string[] { exception.Message },
-            };
+            dynamic erros = new ExpandoObject();
+            erros.Error = new string[] { exception.Message };
 
             switch (exception)
             {
-                case NotFoundException:
+                case DbUpdateException:
+                {
+                    if (exception.InnerException != null && exception.InnerException.Message.Contains("Duplicate")) 
                     {
-                        code = HttpStatusCode.NotFound;
-                        title = "NotFound resource 👀";
-                        break;
+                        var key = exception.InnerException.Message.Split("key ")[1];
+                        code = HttpStatusCode.BadRequest;
+                        erros.Error = new string[] { $"Key {key} is unique" };
                     }
+                    break;
+                }
+
+                case NotFoundException:
+                {
+                    code = HttpStatusCode.NotFound;
+                    title = "NotFound resource 👀";
+                    break;
+                }
 
                 case BadRequestException:
-                    {
-                        code = HttpStatusCode.BadRequest;
-                        title = "oops !!! something is wrong check there  😩";
-                        break;
-                    }
+                {
+                    code = HttpStatusCode.BadRequest;
+                    title = "oops !!! something is wrong check there  😩";
+                    break;
+                }
             }
 
             return new ExceptionDto()
