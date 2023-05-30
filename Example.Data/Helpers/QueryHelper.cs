@@ -1,11 +1,14 @@
 ﻿using Example.Domain.Enums;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Metadata;
 
 namespace Example.Data.Helpers
 {
     public static class QueryHelper
     {
+        private static readonly MethodInfo? ContainsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
         private static readonly MethodInfo OrderByMethod =
         typeof(Queryable).GetMethods().Single(method =>
         method.Name == "OrderBy" && method.GetParameters().Length == 2);
@@ -48,10 +51,14 @@ namespace Example.Data.Helpers
             if (value != null && value.GetType() != memberType)
                 value = Convert.ChangeType(value, memberType);
 
-            var condition = Expression.Equal(memberValue, Expression.Constant(value, memberType));
-   
+            BinaryExpression? condition = null;
+            MethodCallExpression? containsCall = null;
+            Expression<Func<T, bool>>? predicate = null;
+
             switch (@operator)
             {
+                case WhereOperator.Equal:
+                    condition = Expression.Equal(memberValue, Expression.Constant(value, memberType)); break;
                 case WhereOperator.NotEqual:
                     condition = Expression.NotEqual(memberValue, Expression.Constant(value, memberType)); break;
                 case WhereOperator.GreaterThan:
@@ -62,10 +69,33 @@ namespace Example.Data.Helpers
                     condition = Expression.LessThan(memberValue, Expression.Constant(value, memberType)); break;
                 case WhereOperator.LessThanOrEqual:
                     condition = Expression.LessThanOrEqual(memberValue, Expression.Constant(value, memberType)); break;
+                case WhereOperator.Like:
+                {
+                    if (ContainsMethod != null && memberValue.Type == typeof(string)) 
+                    {
+                        containsCall = Expression.Call(memberValue, ContainsMethod, Expression.Constant(value, typeof(string)));
+                    }
+                    break;
+                }   
             }
 
-            var predicate = Expression.Lambda<Func<T, bool>>(condition, item);
-            return source.Where(predicate);
+
+            if (condition != null) 
+            {
+                predicate = Expression.Lambda<Func<T, bool>>(condition, item);
+            }
+
+            if (containsCall != null)
+            {
+                predicate = Expression.Lambda<Func<T, bool>>(containsCall, item);
+            }
+
+            if (predicate != null) 
+            { 
+                return source.Where(predicate);
+            }
+
+            return source;
         }
     }
 }
