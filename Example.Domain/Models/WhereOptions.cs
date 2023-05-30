@@ -48,6 +48,7 @@ namespace Example.Domain.Models
                 "ge" or "Ge" or "GE" => WhereOperator.GreaterThanOrEqual,
                 "lt" or "Lt" or "LT" => WhereOperator.LessThan,
                 "le" or "Le" or "LE" => WhereOperator.LessThanOrEqual,
+                "lk" or "Lk" or "LK" => WhereOperator.Like,
                 _ => WhereOperator.Equal,
             };
         }
