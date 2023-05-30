@@ -17,3 +17,11 @@ app.UseElasticApm();
 app.UseContextMigrations();
 
 app.Run();
+
+namespace Example.BackgroundTasks.Startup
+{
+    public partial class Program
+    {
+        protected Program() { }
+    }
+}

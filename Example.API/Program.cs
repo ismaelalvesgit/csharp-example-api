@@ -46,7 +46,10 @@ app.UseCors(builder =>
 
 app.Run();
 
-public partial class Program
+namespace Example.API.Startup
 {
-    protected Program() { }
+    public partial class Program
+    {
+        protected Program() { }
+    }
 }
