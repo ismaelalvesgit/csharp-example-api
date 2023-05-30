@@ -1,4 +1,4 @@
-﻿using Example.API.Startup;
+﻿using Example.BackgroundTasks.Startup;
 using Example.Data;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Example.integrationTests.Fixtures
 {
-    public class WebInfrastructureFixture : WebApplicationFactory<Program>
+    public class BackgroundInfrastructureFixture : WebApplicationFactory<Program>
     {
 
         protected override IHost CreateHost(IHostBuilder builder)

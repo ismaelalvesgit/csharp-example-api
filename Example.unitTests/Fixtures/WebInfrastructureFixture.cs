@@ -1,4 +1,5 @@
-﻿using Example.Data;
+﻿using Example.API.Startup;
+using Example.Data;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
