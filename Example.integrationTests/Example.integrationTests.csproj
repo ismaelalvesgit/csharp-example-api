@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Example.API\Example.API.csproj" />
+    <ProjectReference Include="..\Example.BackgroundTasks\Example.BackgroundTasks.csproj" />
   </ItemGroup>
 
 </Project>
