@@ -1,10 +1,11 @@
 ﻿using Example.Domain.Entitys;
 using Example.Domain.Interfaces.Repository;
 
-namespace Example.Data.Repositorys;
-
-public class CategoryRepository : RepositoryBase<Category>, ICategoryRepository
+namespace Example.Data.Repositorys
 {
-    public CategoryRepository(AppDbContext context) : base(context)
-    { }
+    public class CategoryRepository : RepositoryBase<Category>, ICategoryRepository
+    {
+        public CategoryRepository(AppDbContext context) : base(context)
+        { }
+    }
 }

@@ -21,7 +21,6 @@ namespace Example.integrationTests.Fixtures
                 services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("Testing", root));
             });
 
-
             return base.CreateHost(builder);
         }
     }

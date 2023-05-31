@@ -2,24 +2,25 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Example.Data.Mappings;
-
-public abstract class BaseEntityTypeConfiguration<TModel> : IEntityTypeConfiguration<TModel> where TModel : EntityBase
+namespace Example.Data.Mappings
 {
-    public virtual void Configure(EntityTypeBuilder<TModel> builder)
+    public abstract class BaseEntityTypeConfiguration<TModel> : IEntityTypeConfiguration<TModel> where TModel : EntityBase
     {
-        // Primary Key
-        builder.HasKey(x => x.Id);
+        public virtual void Configure(EntityTypeBuilder<TModel> builder)
+        {
+            // Primary Key
+            builder.HasKey(x => x.Id);
 
-        // Properties
-        builder.Property(x => x.Id)
-         .IsRequired()
-         .ValueGeneratedOnAdd();
+            // Properties
+            builder.Property(x => x.Id)
+             .IsRequired()
+             .ValueGeneratedOnAdd();
 
-        builder.Property(x => x.CreatedAt)
-               .HasColumnType("datetime(6)");
+            builder.Property(x => x.CreatedAt)
+                   .HasColumnType("datetime(6)");
 
-        builder.Property(x => x.UpdatedAt)
-               .HasColumnType("datetime(6)");
+            builder.Property(x => x.UpdatedAt)
+                   .HasColumnType("datetime(6)");
+        }
     }
 }

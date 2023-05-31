@@ -1,6 +1,5 @@
 ﻿using Example.Application.Helpers;
 using System.Text;
-using System.Text.Json;
 
 namespace Example.API.Middlewares
 {
@@ -63,7 +62,7 @@ namespace Example.API.Middlewares
             await responseBody.CopyToAsync(originalResponseBody);
             context.Response.Body = originalResponseBody;
 
-            _logger.LogInformation(responseContent.ToString());
+            _logger.LogInformation("{param}", responseContent.ToString());
         }
 
         private async Task LogRequest(HttpContext context, string requestId)
@@ -87,7 +86,7 @@ namespace Example.API.Middlewares
             var content = await requestReader.ReadToEndAsync();
             requestContent.Append($"Body: {content}");
 
-            _logger.LogInformation(requestContent.ToString());
+            _logger.LogInformation("{param}", requestContent.ToString());
             context.Request.Body.Position = 0;
         }
 

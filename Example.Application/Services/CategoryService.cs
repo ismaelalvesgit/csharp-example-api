@@ -2,10 +2,11 @@
 using Example.Domain.Interfaces.Repository;
 using Example.Domain.Interfaces.Services;
 
-namespace Example.Application.Services;
-
-public class CategoryService : ServiceBase<Category>, ICategoryService
+namespace Example.Application.Services
 {
-    public CategoryService(ICategoryRepository repository) : base(repository)
-    { }
+    public class CategoryService : ServiceBase<Category>, ICategoryService
+    {
+        public CategoryService(ICategoryRepository repository) : base(repository)
+        { }
+    }
 }

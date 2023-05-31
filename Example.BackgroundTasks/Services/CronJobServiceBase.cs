@@ -43,7 +43,7 @@ namespace Example.BackgroundTasks.Services
                         try { await ExecuteAsync(cancellationToken); }
                         catch (Exception ex)
                         {
-                            _logger.LogError($"Falied execute job Error {ex}");
+                            _logger.LogError("Falied execute job Error {ex}", ex);
                         }
                     }
                     if (!cancellationToken.IsCancellationRequested)

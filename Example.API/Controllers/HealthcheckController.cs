@@ -3,28 +3,29 @@ using Example.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Example.API.Controllers;
-
-[ApiController]
-[ApiVersion("1.0")]
-[Route("api/v{version:apiVersion}/[controller]")]
-[ProducesErrorResponseType(typeof(ExceptionDto))]
-public class HealthcheckController : Controller
+namespace Example.API.Controllers
 {
-    private readonly AppDbContext _context;
-
-    public HealthcheckController(AppDbContext context)
+    [ApiController]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ProducesErrorResponseType(typeof(ExceptionDto))]
+    public class HealthcheckController : Controller
     {
-        _context = context;
-    }
+        private readonly AppDbContext _context;
 
-    [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Health()
-    {
-        await _context.Category.AnyAsync();
+        public HealthcheckController(AppDbContext context)
+        {
+            _context = context;
+        }
 
-        return Ok();
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Health()
+        {
+            await _context.Category.AnyAsync();
+
+            return Ok();
+        }
     }
 }

@@ -24,20 +24,25 @@ namespace Example.Application.Services
             };
         }
 
-        public async Task ProduceAsync<TEntity>(ProducerData<TEntity> producerConfig)
+        public async Task<Guid> ProduceAsync<TEntity>(ProducerData<TEntity> producerConfig)
         {
             var identifier = Guid.NewGuid();
-            _logger.LogInformation($@"Send topic: {producerConfig.Topic} identifier: {identifier}");
+            _logger.LogInformation("Send topic: {topic} identifier: {identifier}", producerConfig.Topic, identifier);
             var producer = new ProducerBuilder<Null, string>(_producerConfig).Build();
             var data = Serializer(producerConfig.Data, identifier);
             await producer.ProduceAsync(producerConfig.Topic, new Message<Null, string> { Value = data });
             producer.Dispose();
+
+            return identifier;
         }
 
         private static string Serializer<TEntity>(TEntity entity, Guid? identifier)
         {
-            Dictionary<string, object?> valuePairs = entity.GetType().GetProperties().Where(x => x.GetValue(entity) != null).ToDictionary(d => ToCamelCase(d.Name), p => p.GetValue(entity));
-            valuePairs.Add("identifier", identifier ?? Guid.NewGuid());
+            Dictionary<string, object?>? valuePairs = entity?.GetType()
+                .GetProperties()
+                .Where(x => x.GetValue(entity) != null)
+                .ToDictionary(d => ToCamelCase(d.Name), p => p.GetValue(entity));
+            valuePairs?.Add("identifier", identifier ?? Guid.NewGuid());
             return JsonConvert.SerializeObject(valuePairs);
         }
 

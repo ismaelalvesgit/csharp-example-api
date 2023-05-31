@@ -2,20 +2,21 @@
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Example.BackgroundTasks.Extensions;
-
-[ExcludeFromCodeCoverage]
-public static class ApplicationBuilderExtension
+namespace Example.BackgroundTasks.Extensions
 {
-    public static IApplicationBuilder UseContextMigrations(this IApplicationBuilder app)
+    [ExcludeFromCodeCoverage]
+    public static class ApplicationBuilderExtension
     {
-        var context = app.ApplicationServices.CreateScope().ServiceProvider.GetService<AppDbContext>();
-
-        if (context != null && context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory" && context.Database.GetPendingMigrations().Any())
+        public static IApplicationBuilder UseContextMigrations(this IApplicationBuilder app)
         {
-            context.Database.Migrate();
-        }
+            var context = app.ApplicationServices.CreateScope().ServiceProvider.GetService<AppDbContext>();
 
-        return app;
+            if (context != null && context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory" && context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
+
+            return app;
+        }
     }
 }

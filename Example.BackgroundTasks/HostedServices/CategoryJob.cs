@@ -27,11 +27,12 @@ namespace Example.BackgroundTasks.HostedServices
 
         public override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"{DateTime.Now:hh:mm:ss} CategoryJob is working.");
+            var time = $"{DateTime.Now:hh: mm: ss}";
+            _logger.LogInformation("{time} CategoryJob is working.", time);
             var category = new Category()
             {
                 Name = $"Ismael {DateTime.Now}",
-                ImageUrl = $"http://ismael.alves.com"
+                ImageUrl = "https://ismael.alves.com"
             };
             await _categoryService.InsertAsync(category);
         }

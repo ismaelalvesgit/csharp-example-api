@@ -54,7 +54,7 @@ namespace Example.BackgroundTasks.Services
 
         protected async Task ProcessQueue(CancellationToken stoppingToken)
         {
-            _logger.LogInformation($"Start consumer topic: {_topic} groupId: {_groupId}");
+            _logger.LogInformation("Start consumer topic: {topic} groupId: {groupId}", _topic, _groupId);
             _consumer = new ConsumerBuilder<Ignore, string>(_consumerConfig).Build();
             _consumer.Subscribe(_topic);
             try
@@ -77,7 +77,7 @@ namespace Example.BackgroundTasks.Services
 
                                 try
                                 {
-                                    _logger.LogInformation($"Topic: {_topic} Menssage: {message.Message.Value} Offset: {message.TopicPartitionOffset}");
+                                    _logger.LogInformation("Topic: {topic} Menssage: {message} Offset: {offset}", _topic, message.Message.Value, message.TopicPartitionOffset);
                                     await ExecuteAsync(message.Message.Value);
                                     committed = Commit(message);
                                     if (committed) break;
@@ -95,7 +95,7 @@ namespace Example.BackgroundTasks.Services
                                         break;
                                     }
                                     // Delay between tries
-                                    LoggerError($"Retry consumer topic: {_topic} currentNumAttempts: {currentNumAttempts}");
+                                    LoggerError($"Retry: {currentNumAttempts}");
                                     await Task.Delay(TimeSpan.FromSeconds(_retryIntervalInSec));
                                 }
                             }
@@ -153,12 +153,12 @@ namespace Example.BackgroundTasks.Services
 
         private void LoggerError(Exception ex)
         {
-            _logger.LogError($@"Failed consumer topic: {_topic} {ex.Message}");
+            _logger.LogError("Failed consumer topic: {topic} {message}", _topic, ex.Message);
         }
 
         private void LoggerError(string ex)
         {
-            _logger.LogError($@"Failed consumer topic: {_topic} {ex}");
+            _logger.LogError("Failed consumer topic: {topic} {ex}", _topic, ex);
         }
 
         public T? Deserialize<T, Y>(string data)

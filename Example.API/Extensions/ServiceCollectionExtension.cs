@@ -8,80 +8,81 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Example.API.Extensions;
-
-[ExcludeFromCodeCoverage]
-public static class ServiceCollectionExtension
+namespace Example.API.Extensions
 {
-    public static WebApplicationBuilder AddPersistense(this WebApplicationBuilder builder)
+    [ExcludeFromCodeCoverage]
+    public static class ServiceCollectionExtension
     {
-        var connectionString = builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string 'Default' not found.");
-        builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseMySql(
-                connectionString,
-                ServerVersion.AutoDetect(connectionString),
-                builder => builder.MigrationsAssembly("Example.Data")));
-
-        return builder;
-    }
-
-    public static WebApplicationBuilder AddApplicationModule(this WebApplicationBuilder builder)
-    {
-        ApplicationModule.Register(builder.Services);
-
-        return builder;
-    }
-
-    public static WebApplicationBuilder AddSwaggerConfiguration(this WebApplicationBuilder builder)
-    {
-
-        builder.Services.AddApiVersioning(c =>
+        public static WebApplicationBuilder AddPersistense(this WebApplicationBuilder builder)
         {
-            c.DefaultApiVersion = new ApiVersion(1, 0);
-            c.ReportApiVersions = true;
-            c.AssumeDefaultVersionWhenUnspecified = true;
-        });
+            var connectionString = builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string 'Default' not found.");
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseMySql(
+                    connectionString,
+                    ServerVersion.AutoDetect(connectionString),
+                    builder => builder.MigrationsAssembly("Example.Data")));
 
-        builder.Services.AddVersionedApiExplorer(c =>
+            return builder;
+        }
+
+        public static WebApplicationBuilder AddApplicationModule(this WebApplicationBuilder builder)
         {
-            c.GroupNameFormat = "'v'VVV";
-            c.SubstituteApiVersionInUrl = true;
-        });
+            ApplicationModule.Register(builder.Services);
 
+            return builder;
+        }
 
-        builder.Services.AddSwaggerGen(c =>
+        public static WebApplicationBuilder AddSwaggerConfiguration(this WebApplicationBuilder builder)
         {
-            c.SwaggerDoc("v1", new OpenApiInfo
+
+            builder.Services.AddApiVersioning(c =>
             {
-                Title = "Example.Services.Api",
-                Version = "v1",
-                Contact = new OpenApiContact
-                {
-                    Name = "Ismael Alves",
-                    Email = "cearaismael1997@gmail.com"
-                }
+                c.DefaultApiVersion = new ApiVersion(1, 0);
+                c.ReportApiVersions = true;
+                c.AssumeDefaultVersionWhenUnspecified = true;
             });
-            c.SchemaFilter<EnumSchemaFilter>();
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            c.IncludeXmlComments(xmlPath);
-        });
 
-        return builder;
-    }
-
-    private sealed class EnumSchemaFilter : ISchemaFilter
-    {
-        public void Apply(OpenApiSchema schema, SchemaFilterContext context)
-        {
-            if (context.Type.IsEnum)
+            builder.Services.AddVersionedApiExplorer(c =>
             {
-                schema.Type = "string";
-                schema.Format = "string";
-                schema.Enum.Clear();
-                Enum.GetNames(context.Type)
-                    .ToList()
-                    .ForEach(n => schema.Enum.Add(new OpenApiString(n)));
+                c.GroupNameFormat = "'v'VVV";
+                c.SubstituteApiVersionInUrl = true;
+            });
+
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Example.Services.Api",
+                    Version = "v1",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Ismael Alves",
+                        Email = "cearaismael1997@gmail.com"
+                    }
+                });
+                c.SchemaFilter<EnumSchemaFilter>();
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
+            return builder;
+        }
+
+        private sealed class EnumSchemaFilter : ISchemaFilter
+        {
+            public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+            {
+                if (context.Type.IsEnum)
+                {
+                    schema.Type = "string";
+                    schema.Format = "string";
+                    schema.Enum.Clear();
+                    Enum.GetNames(context.Type)
+                        .ToList()
+                        .ForEach(n => schema.Enum.Add(new OpenApiString(n)));
+                }
             }
         }
     }

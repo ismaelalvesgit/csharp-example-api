@@ -77,7 +77,7 @@ namespace Example.API.Middlewares
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             var requestId = context.Request.Headers["RequestId"].ToString();
-            _logger.LogError($"RequestId: {requestId} Error: {exception}");
+            _logger.LogError("RequestId: {requestId} Error: {exception}", requestId, exception);
             var response = GetResponseData(requestId, exception);
 
             context.Response.ContentType = "application/json";

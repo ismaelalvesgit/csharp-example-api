@@ -4,14 +4,14 @@ using Example.Domain.Interfaces.Repository;
 using Example.Domain.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Example.Application.Modules;
-
-public static class ApplicationModule
+namespace Example.Application.Modules
 {
-    public static void Register(IServiceCollection services, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+    public static class ApplicationModule
     {
+        public static void Register(IServiceCollection services, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
+        {
 
-        Dictionary<Type, Type> container = new()
+            Dictionary<Type, Type> container = new()
         {
             // Domain
             { typeof(IServiceBase<>), typeof(ServiceBase<>) },
@@ -25,16 +25,17 @@ public static class ApplicationModule
             { typeof(ICategoryRepository), typeof(CategoryRepository) }
         };
 
-        foreach (var (serviceType, implementationType) in container)
-        {
-            switch (serviceLifetime)
+            foreach (var (serviceType, implementationType) in container)
             {
-                case ServiceLifetime.Scoped:
-                    services.AddScoped(serviceType, implementationType); break;
-                case ServiceLifetime.Singleton:
-                    services.AddSingleton(serviceType, implementationType); break;
-                case ServiceLifetime.Transient:
-                    services.AddTransient(serviceType, implementationType); break;
+                switch (serviceLifetime)
+                {
+                    case ServiceLifetime.Scoped:
+                        services.AddScoped(serviceType, implementationType); break;
+                    case ServiceLifetime.Singleton:
+                        services.AddSingleton(serviceType, implementationType); break;
+                    case ServiceLifetime.Transient:
+                        services.AddTransient(serviceType, implementationType); break;
+                }
             }
         }
     }

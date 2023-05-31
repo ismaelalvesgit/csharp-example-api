@@ -6,58 +6,59 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Example.BackgroundTasks.Extensions;
-
-[ExcludeFromCodeCoverage]
-public static class WebApplicationBuilderExtension
+namespace Example.BackgroundTasks.Extensions
 {
-    public static WebApplicationBuilder AddPersistense(this WebApplicationBuilder builder)
+    [ExcludeFromCodeCoverage]
+    public static class WebApplicationBuilderExtension
     {
-        var connectionString = builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string 'Default' not found.");
-        builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseMySql(
-                connectionString,
-                ServerVersion.AutoDetect(connectionString),
-                builder => builder.MigrationsAssembly("Example.Data")), ServiceLifetime.Singleton);
-
-        return builder;
-    }
-
-    public static WebApplicationBuilder AddApplicationModule(this WebApplicationBuilder builder)
-    {
-        ApplicationModule.Register(builder.Services, serviceLifetime: ServiceLifetime.Singleton);
-
-        return builder;
-    }
-
-    public static WebApplicationBuilder AddCronJobs(this WebApplicationBuilder builder)
-    {
-        var jobs = builder.Configuration.GetSection("Jobs").Get<Dictionary<string, string>>();
-
-        builder.Services.AddCronJob<CategoryJob>(c =>
+        public static WebApplicationBuilder AddPersistense(this WebApplicationBuilder builder)
         {
-            c.TimeZoneInfo = TimeZoneInfo.Local;
-            c.CronExpression = $@"{jobs["CategoryJob"]}";
-        });
+            var connectionString = builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string 'Default' not found.");
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseMySql(
+                    connectionString,
+                    ServerVersion.AutoDetect(connectionString),
+                    builder => builder.MigrationsAssembly("Example.Data")), ServiceLifetime.Singleton);
 
-        return builder;
-    }
+            return builder;
+        }
 
-    public static WebApplicationBuilder AddConsumers(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddConsumer<CategoryConsumer>(c =>
+        public static WebApplicationBuilder AddApplicationModule(this WebApplicationBuilder builder)
         {
-            c.topic = "Queuing.Example.Category";
-        });
+            ApplicationModule.Register(builder.Services, serviceLifetime: ServiceLifetime.Singleton);
 
-        return builder;
-    }
+            return builder;
+        }
 
-    public static WebApplicationBuilder AddLibs(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddAutoMapper(Assembly.Load("Example.Application"));
-        builder.Services.AddValidatorsFromAssembly(Assembly.Load("Example.Application"));
+        public static WebApplicationBuilder AddCronJobs(this WebApplicationBuilder builder)
+        {
+            var jobs = builder.Configuration.GetSection("Jobs").Get<Dictionary<string, string>>();
 
-        return builder;
+            builder.Services.AddCronJob<CategoryJob>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Local;
+                c.CronExpression = $@"{jobs["CategoryJob"]}";
+            });
+
+            return builder;
+        }
+
+        public static WebApplicationBuilder AddConsumers(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddConsumer<CategoryConsumer>(c =>
+            {
+                c.topic = "Queuing.Example.Category";
+            });
+
+            return builder;
+        }
+
+        public static WebApplicationBuilder AddLibs(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddAutoMapper(Assembly.Load("Example.Application"));
+            builder.Services.AddValidatorsFromAssembly(Assembly.Load("Example.Application"));
+
+            return builder;
+        }
     }
 }

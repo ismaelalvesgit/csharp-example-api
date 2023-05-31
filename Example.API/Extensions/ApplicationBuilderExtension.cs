@@ -2,31 +2,32 @@
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Example.API.Extensions;
-
-[ExcludeFromCodeCoverage]
-public static class ApplicationBuilderExtension
+namespace Example.API.Extensions
 {
-    public static IApplicationBuilder UseContextMigrations(this IApplicationBuilder app)
+    [ExcludeFromCodeCoverage]
+    public static class ApplicationBuilderExtension
     {
-        var context = app.ApplicationServices.CreateScope().ServiceProvider.GetService<AppDbContext>();
-
-        if (context != null && context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory" && context.Database.GetPendingMigrations().Any())
+        public static IApplicationBuilder UseContextMigrations(this IApplicationBuilder app)
         {
-            context.Database.Migrate();
+            var context = app.ApplicationServices.CreateScope().ServiceProvider.GetService<AppDbContext>();
+
+            if (context != null && context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory" && context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
+
+            return app;
         }
 
-        return app;
-    }
-
-    public static IApplicationBuilder UseSwaggerSetup(this IApplicationBuilder app)
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI(c =>
+        public static IApplicationBuilder UseSwaggerSetup(this IApplicationBuilder app)
         {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Example.Services.Api v1");
-        });
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Example.Services.Api v1");
+            });
 
-        return app;
+            return app;
+        }
     }
 }
