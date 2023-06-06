@@ -10,20 +10,19 @@ namespace Example.Application.Modules
     {
         public static void Register(IServiceCollection services, ServiceLifetime serviceLifetime = ServiceLifetime.Scoped)
         {
-
             Dictionary<Type, Type> container = new()
-        {
-            // Domain
-            { typeof(IServiceBase<>), typeof(ServiceBase<>) },
-            { typeof(IProductService), typeof(ProductService) },
-            { typeof(ICategoryService), typeof(CategoryService) },
-            { typeof(IProducerService), typeof(ProducerService) },
+            {
+                // Domain
+                { typeof(IServiceBase<>), typeof(ServiceBase<>) },
+                { typeof(IProductService), typeof(ProductService) },
+                { typeof(ICategoryService), typeof(CategoryService) },
+                { typeof(IProducerService), typeof(ProducerService) },
 
-            // Data
-            { typeof(IRepositoryBase<>), typeof(RepositoryBase<>) },
-            { typeof(IProductRepository), typeof(ProductRepository) },
-            { typeof(ICategoryRepository), typeof(CategoryRepository) }
-        };
+                // Data
+                { typeof(IRepositoryBase<>), typeof(RepositoryBase<>) },
+                { typeof(IProductRepository), typeof(ProductRepository) },
+                { typeof(ICategoryRepository), typeof(CategoryRepository) }
+            };
 
             foreach (var (serviceType, implementationType) in container)
             {
