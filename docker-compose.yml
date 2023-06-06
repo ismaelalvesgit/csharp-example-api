@@ -4,6 +4,7 @@ services:
   mysql:
     image: mysql:5.7
     restart: always
+    container_name: mysql-csharp-example
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: exampleAPI
@@ -16,10 +17,18 @@ services:
       test: "/etc/init.d/mysql status"
       interval: 1s
       retries: 120
+    
+  kafkadrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafkadrop-csharp-example
+    ports:
+      - 1000:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka-csharp-example:9092
 
   zookeeper:
     image: bitnami/zookeeper
-    restart: always
+    container_name: zookeeper-csharp-example
     environment:
       ALLOW_ANONYMOUS_LOGIN: yes
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -27,16 +36,16 @@ services:
 
   kafka:
     image: bitnami/kafka
-    restart: always
+    container_name: kafka-csharp-example
     ports:
-      - 9090:9092
-      - 9094:9093
+      - 9092:9092
+      - 9093:9093
     environment:
-      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper-csharp-example:2181
       ALLOW_PLAINTEXT_LISTENER: yes
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
       KAFKA_CFG_LISTENERS: CLIENT://:9092,EXTERNAL://:9093
-      KAFKA_CFG_ADVERTISED_LISTENERS: CLIENT://kafka:9092,EXTERNAL://localhost:9093
+      KAFKA_CFG_ADVERTISED_LISTENERS: CLIENT://kafka-csharp-example:9092,EXTERNAL://localhost:9093
       KAFKA_CFG_INTER_BROKER_LISTENER_NAME: CLIENT
       KAFKA_CFG_MAX_PARTITION_FETCH_BYTES: 2048576
       KAFKA_CFG_MAX_REQUEST_SIZE: 2048576
