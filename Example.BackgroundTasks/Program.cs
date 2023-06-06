@@ -14,8 +14,6 @@ var app = builder.Build();
 
 app.UseElasticApm();
 
-app.UseContextMigrations();
-
 app.Run();
 
 namespace Example.BackgroundTasks.Startup
