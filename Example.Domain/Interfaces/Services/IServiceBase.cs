@@ -10,6 +10,7 @@ namespace Example.Domain.Interfaces.Services
         Task DeleteAsync(int id);
         Task DeleteAsync(TEntity model);
         Task<TEntity?> FindByIdAsync(int id);
+        Task<Pagination<TEntity>> FindAllAsync();
         Task<Pagination<TEntity>> FindAllAsync(QueryData query);
         QueryOptions GetQueryOptions(QueryData query);
     }

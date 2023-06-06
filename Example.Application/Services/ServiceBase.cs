@@ -2,6 +2,8 @@
 using Example.Domain.Interfaces.Repository;
 using Example.Domain.Interfaces.Services;
 using Example.Domain.Models;
+using Microsoft.Extensions.Options;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Example.Application.Services
 {
@@ -38,6 +40,11 @@ namespace Example.Application.Services
         public virtual Task DeleteAsync(TEntity model)
         {
             return _repository.DeleteAsync(model);
+        }
+
+        public Task<Pagination<TEntity>> FindAllAsync()
+        {
+            return _repository.FindAllAsync(1, 10);
         }
 
         public virtual Task<Pagination<TEntity>> FindAllAsync(QueryData query)
