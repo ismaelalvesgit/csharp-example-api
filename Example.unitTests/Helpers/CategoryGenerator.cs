@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Example.Application.Dto;
 using Example.Domain.Entitys;
 
 namespace Example.unitTests.Helpers
@@ -18,6 +19,25 @@ namespace Example.unitTests.Helpers
                     imageUrl: fake.Internet.Url(),
                     products: Array.Empty<Product>()
                 );
+
+                categorys.Add(category);
+            }
+
+            return categorys;
+        }
+
+        public static IEnumerable<CategoryDto> GenerateValidCategorysDto(int quantity)
+        {
+            var categorys = new List<CategoryDto>();
+
+            for (int i = 0; i < quantity; i++)
+            {
+                var fake = new Faker();
+                var category = new CategoryDto()
+                {
+                    Name = fake.Name.FullName(),
+                    ImageUrl = fake.Internet.Url(),
+                };
 
                 categorys.Add(category);
             }

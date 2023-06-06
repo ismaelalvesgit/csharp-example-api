@@ -95,6 +95,36 @@ namespace Example.integrationTest.Application.Controllers
         }
 
         [Fact]
+        public async Task Producer_ShouldSuccess()
+        {
+            // Arrange
+            var category = CategoryGenerator.GenerateValidCategorysDto(1).First();
+
+            // Act
+            var response = await _client.PostAsJsonAsync($"{_path}/async", category);
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.NotNull(response);
+        }
+
+        [Fact]
+        public async Task Producer_ShouldThrowBadRequestException()
+        {
+
+            // Act
+            var response = await _client.PostAsJsonAsync($"{_path}/async", new { Data = "Not Data Required" });
+            var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.NotNull(response);
+            Assert.Contains("Name is not empty", responseString);
+            Assert.Contains("ImageUrl is not empty", responseString);
+        }
+
+        [Fact]
         public async Task Create_ShouldSuccess()
         {
             // Arrange
