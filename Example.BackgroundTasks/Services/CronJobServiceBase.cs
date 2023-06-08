@@ -33,6 +33,7 @@ namespace Example.BackgroundTasks.Services
                 {
                     await ScheduleJob(cancellationToken);
                 }
+
                 _timer = new System.Timers.Timer(delay.TotalMilliseconds);
                 _timer.Elapsed += async (sender, args) =>
                 {
@@ -48,7 +49,7 @@ namespace Example.BackgroundTasks.Services
                     }
                     if (!cancellationToken.IsCancellationRequested)
                     {
-                        await ScheduleJob(cancellationToken);    // reschedule next
+                        await ScheduleJob(cancellationToken); // reschedule next
                     }
                 };
                 _timer.Start();
