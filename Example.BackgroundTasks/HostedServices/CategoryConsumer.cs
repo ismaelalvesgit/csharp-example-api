@@ -19,8 +19,9 @@ namespace Example.BackgroundTasks.HostedServices
             IConsumerConfig<CategoryConsumer> config,
             IConfiguration configuration,
             ILogger<CategoryConsumer> logger,
+            IProducerService producerService,
             IHostEnvironment environment
-            ) : base(config.topic, configuration, environment, logger)
+            ) : base(config.Topic, configuration, environment, logger, producerService)
         {
             _categoryService = categoryService;
             _mapper = mapper;
