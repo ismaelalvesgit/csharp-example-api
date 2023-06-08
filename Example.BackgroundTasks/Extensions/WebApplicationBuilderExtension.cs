@@ -47,7 +47,7 @@ namespace Example.BackgroundTasks.Extensions
         {
             builder.Services.AddConsumer<CategoryConsumer>(c =>
             {
-                c.topic = "Queuing.Example.Category";
+                c.Topic = "Queuing.Example.Category";
             });
 
             return builder;

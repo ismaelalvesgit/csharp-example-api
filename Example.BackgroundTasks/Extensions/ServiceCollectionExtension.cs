@@ -35,7 +35,7 @@ namespace Example.BackgroundTasks.Extensions
             var config = new ConsumerConfig<T>();
             options.Invoke(config);
 
-            if (string.IsNullOrWhiteSpace(config.topic))
+            if (string.IsNullOrWhiteSpace(config.Topic))
             {
                 throw new ArgumentNullException(nameof(T), @"Please provide valid data from Consumer");
             }
