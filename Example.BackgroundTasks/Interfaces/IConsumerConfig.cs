@@ -2,7 +2,7 @@
 {
     public interface IConsumerConfig<T>
     {
-        string topic { get; set; }
-        string? groupId { get; set; }
+        string? Topic { get; set; }
+        string? GroupId { get; set; }
     }
 }
