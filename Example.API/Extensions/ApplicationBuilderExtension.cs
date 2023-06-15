@@ -11,7 +11,7 @@ namespace Example.API.Extensions
         {
             var context = app.ApplicationServices.CreateScope().ServiceProvider.GetService<AppDbContext>();
 
-            if (context != null && context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory" && context.Database.GetPendingMigrations().Any())
+            if (context != null && context.Database.GetPendingMigrations().Any())
             {
                 context.Database.Migrate();
             }
