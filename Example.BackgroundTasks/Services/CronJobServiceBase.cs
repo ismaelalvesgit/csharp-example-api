@@ -7,10 +7,10 @@ namespace Example.BackgroundTasks.Services
 
         private System.Timers.Timer? _timer;
         private readonly CronExpression _expression;
-        private readonly TimeZoneInfo _timeZoneInfo;
+        private readonly TimeZoneInfo? _timeZoneInfo;
         private readonly ILogger<CronJobServiceBase> _logger;
 
-        protected CronJobServiceBase(string cronExpression, TimeZoneInfo timeZoneInfo, ILogger<CronJobServiceBase> logger)
+        protected CronJobServiceBase(string? cronExpression, TimeZoneInfo? timeZoneInfo, ILogger<CronJobServiceBase> logger)
         {
             _timer = null;
             _expression = CronExpression.Parse(cronExpression);

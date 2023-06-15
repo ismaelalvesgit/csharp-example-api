@@ -2,7 +2,7 @@
 {
     public class ProducerData<TEntity>
     {
-        public string Topic { get; set; }
-        public TEntity Data { get; set; }
+        public string? Topic { get; set; }
+        public TEntity? Data { get; set; }
     }
 }

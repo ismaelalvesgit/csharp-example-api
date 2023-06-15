@@ -1,8 +1,6 @@
 ﻿using Example.Domain.Enums;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Metadata;
 
 namespace Example.Data.Helpers
 {
@@ -17,7 +15,7 @@ namespace Example.Data.Helpers
             typeof(Queryable).GetMethods().Single(method =>
             method.Name == "OrderByDescending" && method.GetParameters().Length == 2);
 
-        public static bool PropertyExists<T>(this IQueryable<T> source, string propertyName)
+        public static bool PropertyExists<T>(this IQueryable<T> _, string propertyName)
         {
             return typeof(T).GetProperty(propertyName, BindingFlags.IgnoreCase |
                 BindingFlags.Public | BindingFlags.Instance) != null;
