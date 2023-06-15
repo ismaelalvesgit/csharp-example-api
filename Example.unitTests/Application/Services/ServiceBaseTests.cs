@@ -20,11 +20,14 @@ namespace Example.unitTests.Application.Services
         [Fact]
         public async Task Remove_ShoudSucess()
         {
+            // Arrange
             var category = CategoryGenerator.GenerateValidCategorys(1).First();
             await _serviceBase.InsertAsync(category);
 
+            // Act
             var exception = await Record.ExceptionAsync(() => _serviceBase.DeleteAsync(category));
 
+            // Assert
             Assert.Null(exception);
         }
     }
