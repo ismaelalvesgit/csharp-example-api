@@ -27,7 +27,7 @@ namespace Example.integrationTest.Application.Controllers
         public async Task FindById_ShouldThrowNotFoundException()
         {
             // Act
-            var response = await _client.GetAsync($"{_path}/123");
+            var response = await _client.GetAsync($"{_path}/100000000");
             var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             // Assert
@@ -152,6 +152,23 @@ namespace Example.integrationTest.Application.Controllers
             Assert.NotNull(response);
             Assert.Contains("Name is not empty", responseString);
             Assert.Contains("ImageUrl is not empty", responseString);
+        }
+        
+        [Fact]
+        public async Task Create_ShouldThrowDuplicatedException()
+        {
+            // Arrange
+            var category = CategoryGenerator.GenerateValidCategorysDto(1).First();
+
+            // Act
+            await _client.PostAsJsonAsync($"{_path}", category);
+            var response = await _client.PostAsJsonAsync($"{_path}", category);
+            var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.NotNull(response);
+            Assert.Contains("unique", responseString);
         }
 
         [Fact]

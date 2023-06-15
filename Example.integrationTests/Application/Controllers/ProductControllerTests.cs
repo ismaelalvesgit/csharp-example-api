@@ -27,7 +27,7 @@ namespace Example.integrationTest.Application.Controllers
         public async Task FindById_ShouldThrowNotFoundException()
         {
             // Act
-            var response = await _client.GetAsync($"{_path}/123");
+            var response = await _client.GetAsync($"{_path}/100000000");
             var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             // Assert
